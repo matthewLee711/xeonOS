@@ -1,10 +1,13 @@
 #include "linkedlist.h"
 
-Node * createnode(int data);
+Node * createnode(int id);
 
-Node * createnode(int data){
+Node * createnode(int id){
   Node * newNode = malloc(sizeof(Node));
-  newNode->data = data;
+  newNode->id = id;
+  // newNode->arrival_time = arrival_time;
+  // newNode->burst_time = burst_time;
+  // newNode->priority = priority;
   newNode->next = NULL;
   return newNode;
 }
@@ -20,31 +23,31 @@ void display(List * list) {
   if(list->head == NULL) 
     return;
   while(current->next != NULL){
-    printf("%d,", current->data);
+    printf("%d,", current->id);
     current = current->next;
   }
-  printf("%d\n", current->data); 
+  printf("%d\n", current->id); 
 }
 
-void add(int data, List * list){
+void add(int id, List * list){
   Node * current = NULL;
   if(list->head == NULL){
-    list->head = createnode(data);
+    list->head = createnode(id);
   }
   else {
     current = list->head; 
     while (current->next!=NULL){
       current = current->next;
     }
-    current->next = createnode(data);
+    current->next = createnode(id);
   }
 }
 
-void delete(int data, List * list){
+void delete(int id, List * list){
   Node * current = list->head;            
   Node * previous = current;           
   while(current != NULL){           
-    if(current->data == data){      
+    if(current->id == id){      
       previous->next = current->next;
       if(current == list->head)
         list->head = current->next;
