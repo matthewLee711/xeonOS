@@ -44,21 +44,11 @@ void openFile(char* fileName) {
   file = fopen(fileName, "r");
   if(file) {
     while((c = getc(file)) != EOF) {
-      //extract numbers
-      if(c != ',' || c != ' ' || c != '\n') {
-        arrSize++;
-        numConv = realloc(numConv, arrSize * sizeof *numConv);
-        numConv[arrSize] = atoi(&c);
-        printf("%c %i\n", c, numConv[arrSize]);
-      } 
       //convert to full number
-      else {
+      if(c == ',' || c == ' ' || c == '\n') {
         printf("eee\n");
-        //int mult = 1;
-        //for(int i = 0; i < arrSize; i++){mult *= 10;}
+        //write number
         for (int i = 0; i < arrSize; i++) {
-          //1 - 10 - 100 - 1000
-          //mult /= 10;
           pcb[pcbIndex] = 10 * pcb[pcbIndex] + numConv[i];
         }
         printf("%i\n", pcb[0]);
@@ -67,7 +57,15 @@ void openFile(char* fileName) {
         numConv = realloc(numConv, arrSize * sizeof *numConv);
         pcbIndex++;
         subCounter++;
+      } 
+      //extract numbers
+      else {
+        arrSize++;
+        numConv = realloc(numConv, arrSize * sizeof *numConv);
+        numConv[arrSize] = atoi(&c);
+        printf("%c %i\n", c, numConv[arrSize]);
       }
+      //Reset index in 
       if(subCounter == 4) {
         //reset
         subCounter = 0;
