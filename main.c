@@ -20,9 +20,9 @@ int main(void) {
 	// add(2750, 11, 4, 4, list);
 	// add(2750, 12, 6, 3, list);
 	// add(2750, 15, 7, 3, list);
-  printf("Testing");
+  printf("Testing\n");
 	display(list);
-  printf("Finished");
+  printf("Finished\n");
 	// delete(20, list);
 	// reverse(list);
 	// printf("Reversed: ");

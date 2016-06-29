@@ -21,6 +21,7 @@ typedef struct list {
 
 List * emptylist();
 void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list);
+//void SJFadd2(int id, int arrival_time, int burst_time, int priority, List * list)
 void add(int id, int arrival_time, int burst_time, int priority, List * list);
 void add2(int id, int arrival_time, int burst_time, int priority, List * list);
 void delete(int id, List * list);
