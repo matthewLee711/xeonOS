@@ -1,10 +1,52 @@
 #include "fcfs.h"
 
+//iterate an organize based on arrival time
+void FCFSscheduler(List* list) {
+	Node * swap = list->head;
+	Node * compare = list->head;
+	Node * temp;
+	int swap;
+	//insertion sort
+	while(true) {
+		//Move to next set if a is less than b
+		if(swap->arrival_time < compare->arrival_time) {
+				swap = swap->next;
+				compare = compare->next;
+		}
+		//Swap until a is less than b
+		else if(swap->arrival_time > compare->arrival_time) {
+			//swap contents of both linked lists
+			temp->arrival_time = compare->arrival_time;
+			compare->arrival_time = swap->arrival_time;
+			swap->arrival_time = temp->arrival_time;
 
-void FCFSScheduler(List* list) {
-	
+			//check if at head of linked list
+			if (swap->previous == NULL) {
+				printf("%s\n", "nope");
+			}
+			 //back it up if not
+			else {
+				swap = swap->previous;
+				compare = compare->previous;
+			}
+		}
+		//if equal, just place next to each other
+		else if(swap->arrival_time == compare->arrival_time) {
+
+		}
+		//End if reach end of loop
+		else if(swap->next == null) {
+			break;
+		}
+
+
+	}
+
 }
 
+void FCFSdisplayPCB(List* list) {
+
+}
 
 
 

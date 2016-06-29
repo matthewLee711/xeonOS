@@ -7,6 +7,8 @@
 
 //organize based on time.
 //in case file is unorganized.
-void FCFSScheduler(List* list);
+void FCFSscheduler(List* list);
+void FCFSdisplayPCB(List * list);
+
 
 #endif

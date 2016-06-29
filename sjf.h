@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include "linkedlist.h"
 
-
 void SJFscheduler(List * list);
-
+void SJFschedulerDynamic(int id, int arrival_time, int burst_time, int priority);
+void SJFdisplayPCB(List * list);
 
 #endif
