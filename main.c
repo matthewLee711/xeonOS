@@ -87,7 +87,7 @@ void openFile2(char* fileName, List * list) {
 					printf("%i\n", pcb[i], i);
 				}
 				printf("---------------------debug\n");
-        add2(pcb[0], pcb[1], pcb[2], pcb[3], list);
+        SJFadd(pcb[0], pcb[1], pcb[2], pcb[3], list);
         //clear out pcb[]
 				for (int i = 0; i < 4; i++) {
 					pcb[i] = 0;

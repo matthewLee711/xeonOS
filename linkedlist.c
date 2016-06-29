@@ -85,36 +85,125 @@ void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list)
   //temp node to compare against
   Node * compare =  createnode(id, arrival_time, burst_time, priority);
   Node * temp = NULL;
+  Node * tempPrev = NULL;
   if(list->head == NULL){
     list->head = createnode(id, arrival_time, burst_time, priority);
   }
   else {
     current = list->head;         //Grab current front
-    while(current->next!=NULL) {
+    while(current->next != NULL) {
       //If current is bigger, swap with smaller
       if(current->burst_time > compare->burst_time) {
+          //Check if there exists a previous Node
+          //If it exists, store it
+          if(current->previous != NULL) {
+            tempPrev = current->previous
+          }
           //swap
-          temp = current;         //temp store the move
-          current = compare;      //move new var in front
-          current->next = temp;   //point to next node
+          temp = current;             //temp store the larger
+          current = compare;          //move smaller in front
+          current->next = temp;       //have smaller point to larger
+          current = current->next;    //move to large node
+          current->previous = compare;//large node previous point to smaller
+          //If not at head, original was pointing to large, now point to small
+          if(tempPrev != NULL) {
+            current = tempPrev;       //load original pointing to large
+            current->next = compare;  //original point to small now
+          }
 
-          current = current->next;//move to next node
       }
-      //If current is smaller, move to next node
+      //If current is smaller, move to next node to compare against
       else if(current->burst_time < compare->burst_time) {
         //move to next node
         current = current->next;
       }
       //If equal, compare priorities
       else if(current->burst_time == compare->burst_time) {
-        if(current->priority < compare->priority) {
-
+        //If the lower 5--3--8
+        if(current->priority > compare->priority) {
+          //Check if there exists a previous Node
+          //If it exists, store it
+          if(current->previous != NULL) {
+            tempPrev = current->previous
+          }
+          //swap
+          temp = current;             //temp store the larger
+          current = compare;          //move smaller in front
+          current->next = temp;       //have smaller point to larger
+          current = current->next;    //move to large node
+          current->previous = compare;//large node previous point to smaller
+          //If not at head, original was pointing to large, now point to small
+          if(tempPrev != NULL) {
+            current = tempPrev;       //load original pointing to large
+            current->next = compare;  //original point to small now
+          }
         }
-        else if(current->priority > compare->priority) {
-
+        //if the current is smaller, move to next to compare against
+        else if(current->priority < compare->priority) {
+          current = current->next;
+        }
+        //If they are equal, compare times.
+        else if(current->priority == compare->priority){
+          //Current is larger, swap***
+          if(current->arrival_time > compare->arrival_time) {
+            //Check if there exists a previous Node
+            //If it exists, store it
+            if(current->previous != NULL) {
+              tempPrev = current->previous
+            }
+            //swap
+            temp = current;             //temp store the larger
+            current = compare;          //move smaller in front
+            current->next = temp;       //have smaller point to larger
+            current = current->next;    //move to large node
+            current->previous = compare;//large node previous point to smaller
+            //If not at head, original was pointing to large, now point to small
+            if(tempPrev != NULL) {
+              current = tempPrev;       //load original pointing to large
+              current->next = compare;  //original point to small now
+            }
+          }
+          //If times equal, check priority
+          else if(current->arrival_time == compare->arrival_time) {
+            //If not important, swap
+            if(current->priority > compare->priority) {
+              //Check if there exists a previous Node
+              //If it exists, store it
+              if(current->previous != NULL) {
+                tempPrev = current->previous
+              }
+              //swap
+              temp = current;             //temp store the larger
+              current = compare;          //move smaller in front
+              current->next = temp;       //have smaller point to larger
+              current = current->next;    //move to large node
+              current->previous = compare;//large node previous point to smaller
+              //If not at head, original was pointing to large, now point to small
+              if(tempPrev != NULL) {
+                current = tempPrev;       //load original pointing to large
+                current->next = compare;  //original point to small now
+              }
+            }
+            else if(current->priority == compare->priority) {
+              //just place it lol
+              //1--0--1
+              if(current->previous != NULL) {
+                tempPrev = current->previous
+              }
+              temp = current;              //Temp store current node
+              current = compare;           //set current to point to added node
+              current->next = temp;        //set added node to point to next
+              current = current->next;    //move to large node
+              current->previous = compare;//large node previous point to smaller
+              if(tempPrev != NULL) {
+                current = tempPrev;       //load original pointing to large
+                current->previous = tempPrev;//set added node to point to previous
+              }
+            }
+          }
         }
         else {
-
+          current = current->next;
         }
       }
       //When reach end, end loop
