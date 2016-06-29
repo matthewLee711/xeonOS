@@ -9,6 +9,7 @@ Node * createnode(int id, int arrival_time, int burst_time, int priority){
   newNode->burst_time = burst_time;
   newNode->priority = priority;
   newNode->next = NULL;
+  newNode->previous = NULL;
   return newNode;
 }
 
@@ -18,18 +19,36 @@ List * emptylist(){
   return list;
 }
 
+// void display(List * list) {
+//   Node * current = list->head;
+//   if(list->head == NULL)
+//     return;
+//   while(current->next != NULL){
+//     printf("%d,", current->id);
+//     current = current->next;
+//   }
+//   printf("%d\n", current->id);
+// }
+
 void display(List * list) {
   Node * current = list->head;
   if(list->head == NULL)
     return;
   while(current->next != NULL){
-    printf("%d,", current->id);
+    //printf("%d,", current->id);
     current = current->next;
+  }
+  //backwards
+  while(current->previous != NULL){
+    printf("%d,", current->id);
+    current = current->previous;
   }
   printf("%d\n", current->id);
 }
 
 void add(int id, int arrival_time, int burst_time, int priority, List * list){
+  printf("adding: %i %i %i %i\n", id, arrival_time, burst_time, priority);
+  printf("%d\n", id);
   Node * current = NULL;
   if(list->head == NULL){
     list->head = createnode(id, arrival_time, burst_time, priority);
@@ -43,6 +62,24 @@ void add(int id, int arrival_time, int burst_time, int priority, List * list){
   }
 }
 
+void add2(int id, int arrival_time, int burst_time, int priority, List * list){
+  Node * current = NULL;
+  Node * tempPrev = NULL;
+  if(list->head == NULL){
+    list->head = createnode(id, arrival_time, burst_time, priority);
+  }
+  else {
+    current = list->head;
+    while (current->next!=NULL){
+      current = current->next;
+    }
+    current->next = createnode(id, arrival_time, burst_time, priority);
+    tempPrev = current;
+    current = current->next;
+    current->previous = tempPrev;
+  }
+}
+
 void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list){
   Node * current = NULL;
   //temp node to compare against
@@ -53,7 +90,7 @@ void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list)
   }
   else {
     current = list->head;         //Grab current front
-    while(true) {
+    while(current->next!=NULL) {
       //If current is bigger, swap with smaller
       if(current->burst_time > compare->burst_time) {
           //swap

@@ -5,19 +5,12 @@
 //#include "sjf.h"
 
 void openFile(char* fileName);
-void openFile2(char* fileName);
+void openFile2(char* fileName, List * list);
 int main(void) {
-	openFile2("processes.txt");
+  List * list = emptylist();
+	openFile2("processes.txt", list);
 	printf("done\n");
-	//List * list = emptylist();
-
-	//Process_id, arrival_time, burst_time, priority
-	//add(1, 3, 5, 6, list);
-	//add(20, list);
-	// add(2, 3, 5, 6, list);
-	// add(5, 3, 5, 6, list);
-	// add(8, 3, 5, 6, list);
-	// add(9, 3, 5, 6, list);
+  //Process_id, arrival_time, burst_time, priority
 	// add(2760, 1, 16, 1, list);
 	// add(2750, 1, 9, 2, list);
 	// add(2730, 3, 14, 5, list);
@@ -28,13 +21,9 @@ int main(void) {
 	// add(2750, 12, 6, 3, list);
 	// add(2750, 15, 7, 3, list);
 
-	//display(list);
-	// delete(2, list);
-	// display(list);
-	// delete(1, list);
-	// display(list);
+	display(list);
+
 	// delete(20, list);
-	// display(list);
 	// reverse(list);
 	// printf("Reversed: ");
 	// display(list);
@@ -42,7 +31,7 @@ int main(void) {
 	return 0;
 }
 
-void openFile2(char* fileName) {
+void openFile2(char* fileName, List * list) {
 	char c;
 	//Open file
 	int arrSize = 0;
@@ -58,20 +47,21 @@ void openFile2(char* fileName) {
 		while ((c = getc(file)) != EOF) {
 			//convert to full number
 			if (c == ',' || c == '\n') {
-				printf("convert\n");
-				printf("cause of entry: %c %i\n", c, atoi(&c));
-				for (int i = 0; i < arrSize; i++) {
-					printf("num: %i index: %i\n", numConv[i], i);
-				}
-				for (int i = 0; i < 4; i++) {
-					printf("inside pcb: %i ", pcb[i]);
-				}printf("\n");
+        //debug
+        // printf("convert\n");
+				// printf("cause of entry: %c %i\n", c, atoi(&c));
+				// for (int i = 0; i < arrSize; i++) {
+				// 	printf("num: %i index: %i\n", numConv[i], i);
+				// }
+				// for (int i = 0; i < 4; i++) {
+				// 	printf("inside pcb: %i ", pcb[i]);
+				// }printf("\n");
 				//write number
 				for (int i = 0; i < arrSize; i++) {
 					pcb[pcbIndex] = 10 * pcb[pcbIndex] + numConv[i];
 					printf("converting. pcb: %i , num: %i\n", pcb[pcbIndex], numConv[i]);
 				}
-				printf("converted num: %i %i %i %i\n", pcb[0], pcb[1], pcb[2], pcb[3]);
+				//printf("converted num: %i %i %i %i\n", pcb[0], pcb[1], pcb[2], pcb[3]);
 				//reset
 				arrSize = 0;
 				//clear out numConv
@@ -90,80 +80,27 @@ void openFile2(char* fileName) {
 			if (subCounter == 4) {
 				//reset
 				subCounter = 0;
-				pcbIndex = 0;//////////////
+				pcbIndex = 0;
 				//debug print
 				printf("---------------------debug\n");
 				for (int i = 0; i < 4; ++i) {
 					printf("%i\n", pcb[i], i);
 				}
 				printf("---------------------debug\n");
-				//clear out pcb[]
+        add2(pcb[0], pcb[1], pcb[2], pcb[3], list);
+        //clear out pcb[]
 				for (int i = 0; i < 4; i++) {
 					pcb[i] = 0;
 				}
-				for (int i = 0; i < 4; i++) {
-					printf("clear: %i ", pcb[i]);
-				}
+				// for (int i = 0; i < 4; i++) {
+				// 	printf("clear: %i ", pcb[i]);
+				// }
 				//add elements to linked list
 			}
 			//printf("%c", c);
 		} //End of while loop
-		//free(numConv);
+
 		fclose(file);
 	}
 	printf("completed parse");
-}
-
-void openFile(char* fileName) {
-	char c;
-	//Open file
-	int arrSize = 0;
-	int* numConv = NULL;//dynamically allocated array
-	int pcbIndex = 0;
-	int pcb[4];//store numbers into here
-	int subCounter = 0;
-
-	FILE *file;
-	file = fopen(fileName, "r");
-	if (file) {
-		while ((c = getc(file)) != EOF) {
-			//convert to full number
-			if (c == ',' || c == ' ' || c == '\n') {
-				printf("eee\n");
-				//write number
-				for (int i = 0; i < arrSize; i++) {
-					pcb[pcbIndex] = 10 * pcb[pcbIndex] + numConv[i];
-				}
-				printf("%i\n", pcb[0]);
-				//reset
-				arrSize = 0;
-				numConv = realloc(numConv, arrSize * sizeof *numConv);
-				pcbIndex++;
-				subCounter++;
-			}
-			//extract numbers
-			else {
-				arrSize++;
-				numConv = realloc(numConv, arrSize * sizeof *numConv);
-				numConv[arrSize] = atoi(&c);
-				printf("%c %i\n", c, numConv[arrSize]);
-			}
-			//Reset index in
-			if (subCounter == 4) {
-				//reset
-				subCounter = 0;
-				//debug print
-				for (int i = 0; i < 4; ++i) {
-					printf("%i ", pcb[i]);
-					if (i % 4 == 0) {
-						printf("\n");
-					}
-				}
-				//add elements to linked list
-			}
-			//printf("%c", c);
-		}
-		free(numConv);
-		fclose(file);
-	}
 }

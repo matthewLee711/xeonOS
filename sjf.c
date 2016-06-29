@@ -13,7 +13,7 @@ void SJFschedulerDynamic(int id, int arrival_time, int burst_time, int priority)
   while(true) {
     //swap if smaller
     if(temp->arrival_time < current->arrival_time) {
-      
+
     }
     //end loop
     else if(temp->arrival_time > current->arrival_time) {
@@ -68,6 +68,60 @@ void SJFdisplayPCB(List* list) {
   //calculate average wait time
   //Process_id, arrival_time, burst_time, priority
   //Create a hashmap
+}
+
+void openFile(char* fileName) {
+	char c;
+	//Open file
+	int arrSize = 0;
+	int* numConv = NULL;//dynamically allocated array
+	int pcbIndex = 0;
+	int pcb[4];//store numbers into here
+	int subCounter = 0;
+
+	FILE *file;
+	file = fopen(fileName, "r");
+	if (file) {
+		while ((c = getc(file)) != EOF) {
+			//convert to full number
+			if (c == ',' || c == ' ' || c == '\n') {
+				printf("eee\n");
+				//write number
+				for (int i = 0; i < arrSize; i++) {
+					pcb[pcbIndex] = 10 * pcb[pcbIndex] + numConv[i];
+				}
+				printf("%i\n", pcb[0]);
+				//reset
+				arrSize = 0;
+				numConv = realloc(numConv, arrSize * sizeof *numConv);
+				pcbIndex++;
+				subCounter++;
+			}
+			//extract numbers
+			else {
+				arrSize++;
+				numConv = realloc(numConv, arrSize * sizeof *numConv);
+				numConv[arrSize] = atoi(&c);
+				printf("%c %i\n", c, numConv[arrSize]);
+			}
+			//Reset index in
+			if (subCounter == 4) {
+				//reset
+				subCounter = 0;
+				//debug print
+				for (int i = 0; i < 4; ++i) {
+					printf("%i ", pcb[i]);
+					if (i % 4 == 0) {
+						printf("\n");
+					}
+				}
+				//add elements to linked list
+			}
+			//printf("%c", c);
+		}
+		free(numConv);
+		fclose(file);
+	}
 }
 
 
