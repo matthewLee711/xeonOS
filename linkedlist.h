@@ -13,12 +13,13 @@ typedef struct node {
 } Node;
 
 typedef struct list {
-  Node * head; 
+  Node * head;
 } List;
 
 //Process_id, arrival_time, burst_time, priority
 
 List * emptylist();
+void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list);
 void add(int id, int arrival_time, int burst_time, int priority, List * list);
 void delete(int id, List * list);
 void display(List * list);
@@ -26,4 +27,3 @@ void reverse(List * list);
 void destroy(List * list);
 
 #endif
-

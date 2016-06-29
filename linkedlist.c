@@ -20,13 +20,13 @@ List * emptylist(){
 
 void display(List * list) {
   Node * current = list->head;
-  if(list->head == NULL) 
+  if(list->head == NULL)
     return;
   while(current->next != NULL){
     printf("%d,", current->id);
     current = current->next;
   }
-  printf("%d\n", current->id); 
+  printf("%d\n", current->id);
 }
 
 void add(int id, int arrival_time, int burst_time, int priority, List * list){
@@ -35,7 +35,7 @@ void add(int id, int arrival_time, int burst_time, int priority, List * list){
     list->head = createnode(id, arrival_time, burst_time, priority);
   }
   else {
-    current = list->head; 
+    current = list->head;
     while (current->next!=NULL){
       current = current->next;
     }
@@ -43,21 +43,66 @@ void add(int id, int arrival_time, int burst_time, int priority, List * list){
   }
 }
 
+void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list){
+  Node * current = NULL;
+  //temp node to compare against
+  Node * compare =  createnode(id, arrival_time, burst_time, priority);
+  Node * temp = NULL;
+  if(list->head == NULL){
+    list->head = createnode(id, arrival_time, burst_time, priority);
+  }
+  else {
+    current = list->head;         //Grab current front
+    while(true) {
+      //If current is bigger, swap with smaller
+      if(current->burst_time > compare->burst_time) {
+          //swap
+          temp = current;         //temp store the move
+          current = compare;      //move new var in front
+          current->next = temp;   //point to next node
+
+          current = current->next;//move to next node
+      }
+      //If current is smaller, move to next node
+      else if(current->burst_time < compare->burst_time) {
+        //move to next node
+        current = current->next;
+      }
+      //If equal, compare priorities
+      else if(current->burst_time == compare->burst_time) {
+        if(current->priority < compare->priority) {
+
+        }
+        else if(current->priority > compare->priority) {
+
+        }
+        else {
+
+        }
+      }
+      //When reach end, end loop
+      if(current->next == NULL) {
+        break;
+      }
+    }
+  }
+}
+
 void delete(int id, List * list){
-  Node * current = list->head;            
-  Node * previous = current;           
-  while(current != NULL){           
-    if(current->id == id){      
+  Node * current = list->head;
+  Node * previous = current;
+  while(current != NULL){
+    if(current->id == id){
       previous->next = current->next;
       if(current == list->head)
         list->head = current->next;
       free(current);
       return;
-    }                               
-    previous = current;             
-    current = current->next;        
-  }                                 
-}                                   
+    }
+    previous = current;
+    current = current->next;
+  }
+}
 
 void reverse(List * list){
   Node * reversed = NULL;
