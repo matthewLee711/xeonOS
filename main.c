@@ -20,9 +20,9 @@ int main(void) {
 	// add(2750, 11, 4, 4, list);
 	// add(2750, 12, 6, 3, list);
 	// add(2750, 15, 7, 3, list);
-
+  printf("Testing");
 	display(list);
-
+  printf("Finished");
 	// delete(20, list);
 	// reverse(list);
 	// printf("Reversed: ");
@@ -59,7 +59,7 @@ void openFile2(char* fileName, List * list) {
 				//write number
 				for (int i = 0; i < arrSize; i++) {
 					pcb[pcbIndex] = 10 * pcb[pcbIndex] + numConv[i];
-					printf("converting. pcb: %i , num: %i\n", pcb[pcbIndex], numConv[i]);
+					//printf("converting. pcb: %i , num: %i\n", pcb[pcbIndex], numConv[i]);
 				}
 				//printf("converted num: %i %i %i %i\n", pcb[0], pcb[1], pcb[2], pcb[3]);
 				//reset
