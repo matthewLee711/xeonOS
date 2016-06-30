@@ -23,6 +23,63 @@ int main(void) {
   printf("Testing\n");
 	display(list);
   printf("Finished\n");
+  char str[100];
+
+
+  int stop = 0;
+  int input;
+  int inputInner;
+  int send[4];
+  // while(stop != 1) {
+  //   printf("Press 0 to exit the program\n");
+  //   printf("Press 1 to input a PCB into a scheduler\n");
+  //   printf("Press 2 to remove a PCB\n");
+  //   scanf("%d\n", &input);
+  //   //End program
+  //   if(input == 0) {
+  //     break;
+  //   }
+  //   //Input pcb
+  //   else if(input == 1) {
+  //     printf("Enter an ID\n");
+  //     scanf("%i\n", &inputInner);
+  //     send[0] = inputInner;
+  //     printf("Enter an arrival time\n");
+  //     scanf("%i\n", &inputInner);
+  //     send[1] = inputInner;
+  //     printf("Enter an burst time\n");
+  //     scanf("%i\n", &inputInner);
+  //     send[2] = inputInner;
+  //     printf("Enter an priority\n");
+  //     scanf("%i\n", &inputInner);
+  //     send[3] = inputInner;
+  //
+  //     printf("To insert in Shortest Job First Scheduler, press 0\n");
+  //     printf("To insert in Non Preemptive Priority Scheduler, press 1\n");
+  //     scanf("%i\n", &inputInner);
+  //     if(inputInner == 0) {
+  //       //SJFadd(send[0], send[1], send[2], send[3], list);
+  //     }
+  //     else if(inputInner == 1) {
+  //       //priorityAdd(send[0], send[1], send[2], send[3], list);
+  //     }
+  //     else {
+  //       printf("That is not a valid input\n");
+  //     }
+  //   }
+  //   //delete pcb
+  //   else if(input == 2) {
+  //     printf("Type an id to delete a PCB\n");
+  //     scanf("%i\n", &inputInner);
+  //     delete(inputInner, list);
+  //   }
+  //   else{
+  //     printf("Please enter a valid number\n");
+  //   }
+  //
+  // }
+
+
 	// delete(20, list);
 	// reverse(list);
 	// printf("Reversed: ");
@@ -87,7 +144,8 @@ void openFile2(char* fileName, List * list) {
 					printf("%i\n", pcb[i], i);
 				}
 				printf("---------------------debug\n");
-        SJFadd(pcb[0], pcb[1], pcb[2], pcb[3], list);
+        //SJFadd(pcb[0], pcb[1], pcb[2], pcb[3], list);
+        priorityAdd(pcb[0], pcb[1], pcb[2], pcb[3], list);
         //clear out pcb[]
 				for (int i = 0; i < 4; i++) {
 					pcb[i] = 0;
