@@ -1,39 +1,39 @@
 #include "Node.h"
 
 Node::Node() {
-  pid = 0;
-  arrival_time = 0;
-  burst_time = 0;
-  priority = 0;
-  next = nullptr;
+	pid = 0;
+	arrival_time = 0;
+	burst_time = 0;
+	priority = 0;
+	next = nullptr;
 }
 Node::Node(int pid, int arrival_time, int burst_time, int priority) {
-  this->pid = pid;
-  this->arrival_time = arrival_time;
-  this->burst_time = burst_time;
-  this->priority = priority;
+	this->pid = pid;
+	this->arrival_time = arrival_time;
+	this->burst_time = burst_time;
+	this->priority = priority;
 }
 
 int Node::getPid() {
-  return pid;
+	return pid;
 }
 
-int Node::getBurstTime(){
-  return arrival_time;
+int Node::getBurstTime() {
+	return arrival_time;
 }
 
-int Node::getPriority(){
-  return priority;
+int Node::getPriority() {
+	return priority;
 }
 
-int Node::getArrivalTime(){
-  return burst_time;
+int Node::getArrivalTime() {
+	return burst_time;
 }
 
-int Node::setNext(Node* link){
-  this->next = link;
+void Node::setNext(Node* link) {
+	this->next = link;
 }
 
-Node Node::getNext(){
-  return this->next;
+Node* Node::getNext() {
+	return next;
 }
