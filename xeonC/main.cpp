@@ -5,13 +5,33 @@
 #include <fstream>
 #include "Scheduler.h"
 
-void extractContents(std::string fileName, int schedulerChoice);
+void getPCBandSetScheduler(std::string fileName, int schedulerChoice);
 
 int main() {
-
+  Scheduler * list = new Scheduler();
+  bool exit = false;
+  while(exit != false){
+    std::cin >> input;
+    if(input == 0) {
+      exit == false;
+    }
+    else if(input == 1) {
+      //input file
+    }
+    else if(input == 2) {
+      //add pcb
+      //list.defaultInsert()
+    }
+    else if(input == 3) {
+      //delete pcb
+    }
+    else {
+      std::cout << "Not a valid input\n";
+    }
+  }
 }
 
-void extractContents(std::string fileName, int schedulerChoice) {
+void getPCBandSetScheduler(std::string fileName, int schedulerChoice) {
   std::ifstream file("processes.txt", std::ios::in);
   std::std::vector<int> pcb;
   int ext;
@@ -25,8 +45,10 @@ void extractContents(std::string fileName, int schedulerChoice) {
           ss.ignore();
         }
       }
-      schedulerChoice(pcb, 0);
+      schedulerChoice(pcb, list, 0);
     }
+  } else {
+    std::cout << "Please enter a valid file name\n"
   }
 
 }

@@ -17,8 +17,8 @@ public:
   int getBurstTime();
   int getPriority();
   int getArrivalTime();
-  int setNext(Node* link);
-  int getNext();
+  Node getNext();
+  void setNext(Node* link);
 
 };
 
