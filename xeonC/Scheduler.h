@@ -7,7 +7,7 @@
 class Scheduler {
 private:
 	Node * head;
-
+	int poop;
 public:
 	Scheduler();
 	void schedulerChooser(std::vector<int>pcb, Scheduler * list, int schedulerChoice);

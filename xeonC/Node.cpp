@@ -12,6 +12,7 @@ Node::Node(int pid, int arrival_time, int burst_time, int priority) {
 	this->arrival_time = arrival_time;
 	this->burst_time = burst_time;
 	this->priority = priority;
+	next = nullptr;
 }
 
 int Node::getPid() {
@@ -35,5 +36,5 @@ void Node::setNext(Node* link) {
 }
 
 Node* Node::getNext() {
-	return next;
+	return this->next;
 }
