@@ -8,14 +8,14 @@
 void getPCBandSetScheduler(std::string fileName, Scheduler * list, int schedulerChoice);
 
 int main() {
-  std::cout << "-----------------------------------------------\n";
-  std::cout << "xeonOS\n";
-  std::cout << "-----------------------------------------------\n";
+	std::cout << "-----------------------------------------------\n";
+	std::cout << "xeonOS\n";
+	std::cout << "-----------------------------------------------\n";
 	Scheduler * list = new Scheduler();
 	bool exit = true;
 	std::string input;
 	while (exit != false) {
-    std::cout << "-----------------------------------------------\n";
+		std::cout << "-----------------------------------------------\n";
 		std::cout << "Press 1 to insert pcb file of your choice\n";
 		std::cout << "Press 2 to insert a pcb\n";
 		std::cout << "Press 3 to delete a pcb\n";
@@ -56,24 +56,36 @@ int main() {
 			list->schedulerChooser(add, list, std::stoi(input));
 		}
 		else if (input == "3") {
-      std::cout << "Please choose a scheduler you would like to use\n";
-			std::cout << "Press 0 for the default delete (delete from head)\n";
+			std::cout << "Please choose a scheduler you would like to use\n";
+			std::cout << "Press 0 for the default delete (delete tail)\n";
 			std::cout << "Press 1 to delete by PID\n";
-      std::cin >> input;
-      if(std::stoi(input) == 0) {
-        list->defaultDelete();
-      }
-      else if(std::stoi(input) == 1) {
-        std::cout << "Enter a PID to delete\n";
-        std::cin >> input;
-        list->deletePCB(std::stoi(input));
-      }
-      else {
-        std::cout << "Not a valid input\n";
-      }
+			std::cin >> input;
+			if (std::stoi(input) == 0) {
+				list->defaultDelete();
+			}
+			else if (std::stoi(input) == 1) {
+				std::cout << "Enter a PID to delete\n";
+				std::cin >> input;
+				list->deletePCB(std::stoi(input));
+			}
+			else {
+				std::cout << "Not a valid input\n";
+			}
 		}
 		else if (input == "4") {
-			list->display();
+			std::cout << "Please choose an option\n";
+			std::cout << "Press 0 to display all PCBs\n";
+			std::cout << "Press 1 to display average wait time\n";
+			std::cin >> input;
+			if (std::stoi(input) == 0) {
+				list->display();
+			}
+			else if (std::stoi(input) == 1) {
+				list->averageWaitTime();
+			}
+			else {
+				std::cout << "Not a valid input\n";
+			}
 		}
 		else {
 			std::cout << "Not a valid input\n";

@@ -7,7 +7,8 @@
 class Scheduler {
 private:
 	Node * head;
-	int poop;
+	double sjfAverageTime;
+  double priorityAverageTime;
 public:
 	Scheduler();
 	void schedulerChooser(std::vector<int>pcb, Scheduler * list, int schedulerChoice);
@@ -16,6 +17,7 @@ public:
 	void defaultInsert(int pid, int arrival_time, int burst_time, int priority);
 	void defaultDelete();
 	int deletePCB(int pid);
+  double averageWaitTime();
 	void display();
 	~Scheduler();
 };

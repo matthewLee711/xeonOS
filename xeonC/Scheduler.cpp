@@ -12,12 +12,11 @@ void Scheduler::schedulerChooser(std::vector<int> pcb, Scheduler * list, int sch
 		priorityScheduler(pcb[0], pcb[1], pcb[2], pcb[3]);
 	}
 	else if (schedulerChoice == 2) {
-		//defaultDelete();
 		defaultInsert(pcb[0], pcb[1], pcb[2], pcb[3]);
 	}
-  else {
-    std::cout << "Invalid Scheduler Choice\n";
-  }
+	else {
+		std::cout << "Invalid Scheduler Choice\n";
+	}
 }
 
 void Scheduler::shortestJobFirst(int pid, int arrival_time, int burst_time, int priority) {
@@ -36,8 +35,12 @@ void Scheduler::shortestJobFirst(int pid, int arrival_time, int burst_time, int 
 		}
 		link->setNext(current->getNext());
 		current->setNext(link);
-    printf("point: %i %i %i %i\n", link->getPid(), link->getArrivalTime(), link->getBurstTime(), link->getPriority());
+		printf("point: %i %i %i %i\n", link->getPid(), link->getArrivalTime(), link->getBurstTime(), link->getPriority());
 	}
+	//arrival_time
+	//Completion time = burst_time + arrival_time
+	//Turnaround time = completionTime - arrival_time
+	//Wait time = (completionTime - arrival_time) - Burst time
 	display();
 	std::cout << "----------------------------\n";
 }
@@ -59,7 +62,7 @@ void Scheduler::priorityScheduler(int pid, int arrival_time, int burst_time, int
 		link->setNext(current->getNext());
 		current->setNext(link);
 	}
-  //printf("point: %i %i %i %i\n", link->getPid(), link->getArrivalTime(), link->getBurstTime(), link->getPriority());
+	//printf("point: %i %i %i %i\n", link->getPid(), link->getArrivalTime(), link->getBurstTime(), link->getPriority());
 	display();
 	std::cout << "----------------------------\n";
 }
@@ -78,36 +81,89 @@ void Scheduler::defaultInsert(int pid, int arrival_time, int burst_time, int pri
 		}
 		current->setNext(link);
 	}
-  display();
-  std::cout << "----------------------------\n";
+	display();
+	std::cout << "----------------------------\n";
 }
 
 void Scheduler::defaultDelete() {
-  if(head == nullptr) {
-    std::cout<<"You can't delete from an empty queue\n";
-  }
-  else {
-    Node * temp = head->getNext();
-    delete head;
-    head = temp;
-  }
+	if (head == nullptr) {
+		std::cout << "You can't delete from an empty queue\n";
+	}
+	else {
+		Node * current = head;
+		while (current->getNext()->getNext() != nullptr) {
+			current = current->getNext();
+		}
+		printf("point: %i %i %i %i\n", current->getPid(), current->getArrivalTime(), current->getBurstTime(), current->getPriority());
+		delete current->getNext();
+		current->setNext(nullptr);
+	}
+}
+/*
+int Scheduler::deletePCB(int pid) {
+	if (head == nullptr) {
+		std::cout << "You can't delete from an empty queue\n";
+	}
+	else if (head->getPid() == pid) {
+		printf("2 %i ---- %i",head->getPid(), pid);
+		Node * temp = head;
+		delete head;
+		head = temp->getNext();
+	}
+	else {
+		printf("3 %i ---- %i", head->getPid(), pid);
+		Node * temp = head;
+		while (temp->getPid() != pid) {
+			temp = temp->getNext();
+			if (temp == nullptr) {
+				std::cout << "The PID you want to delete does not exist\n";
+				return 0;
+			}
+		}
+		delete temp->getNext();
+		temp->setNext(temp->getNext()->getNext());
+		return pid;
+	}
+}
+*/
+int Scheduler::deletePCB(int pid) {
+	Node * current = head;
+	Node * previous = current;
+	while (current != NULL) {
+		if (current->getPid() == pid) {
+			previous->setNext(current->getNext());
+			if (current == head)
+				head = current->getNext();
+			delete current;
+			current = nullptr;
+			return 0;
+		}
+		previous = current;
+		current = current->getNext();
+	}
+	return 0;
 }
 
-int Scheduler::deletePCB(int pid) {
-  if(head == nullptr) {
-    std::cout<<"You can't delete from an empty queue\n";
-  }
-  else {
-    Node * temp = head;
-    while(temp->getPid() != pid) {
-      temp = temp->getNext();
-      if(temp == nullptr) {
-        std::cout<<"The PID you want to delete does not exist\n";
-        return 0;
-      }
-    }
-    temp->setNext(temp->getNext()->getNext());
-  }
+double Scheduler::averageWaitTime() {
+	double waitTime = 0.0;
+	double totalTime = 0; //for purposes of calculating incremental wait time
+	double finalBurst = 0;
+	double total = 0;
+	int totalNodes = 0;
+	Node * current = head;
+
+	while (current != nullptr) {
+		totalNodes++;
+		total += current->getBurstTime();
+		waitTime += total;
+		waitTime -= current->getArrivalTime();
+		current = current->getNext();
+	}
+
+	waitTime -= total; //for last process
+	waitTime /= double(totalNodes);
+	std::cout << "avg wait time: " << waitTime << std::endl;
+	return waitTime;
 }
 
 void Scheduler::display() {
@@ -116,7 +172,7 @@ void Scheduler::display() {
 		printf("%i %i %i %i\n", temp->getPid(), temp->getArrivalTime(), temp->getBurstTime(), temp->getPriority());
 		temp = temp->getNext();
 	}
-  printf("%i %i %i %i\n", temp->getPid(), temp->getArrivalTime(), temp->getBurstTime(), temp->getPriority());
+	printf("%i %i %i %i\n", temp->getPid(), temp->getArrivalTime(), temp->getBurstTime(), temp->getPriority());
 }
 
 Scheduler::~Scheduler() {
