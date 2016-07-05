@@ -15,7 +15,7 @@ public:
 	void priorityScheduler(int pid, int arrival_time, int burst_time, int priority);
 	void defaultInsert(int pid, int arrival_time, int burst_time, int priority);
 	void defaultDelete();
-	void deletePCB();
+	int deletePCB(int pid);
 	void display();
 	~Scheduler();
 };
