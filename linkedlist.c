@@ -19,17 +19,6 @@ List * emptylist() {
 	return list;
 }
 
-// void display(List * list) {
-//   Node * current = list->head;
-//   if(list->head == NULL)
-//     return;
-//   while(current->next != NULL){
-//     printf("%d,", current->id);
-//     current = current->next;
-//   }
-//   printf("%d\n", current->id);
-// }
-
 void display(List * list) {
 	Node * current = list->head;
 	if (list->head == NULL)
@@ -38,55 +27,14 @@ void display(List * list) {
 		printf("%d %d\n", current->id, current->burst_time);
 		current = current->next;
 	}
-	//backwards
-	// while (current->previous != NULL) {
-	// 	printf("%d,", current->id);
-	// 	current = current->previous;
-	// }
 	printf("%d\n", current->id);
 }
 
-void add(int id, int arrival_time, int burst_time, int priority, List * list) {
-	printf("adding: %i %i %i %i\n", id, arrival_time, burst_time, priority);
-	printf("%d\n", id);
-	Node * current = NULL;
-	if (list->head == NULL) {
-		list->head = createnode(id, arrival_time, burst_time, priority);
-	}
-	else {
-		current = list->head;
-		while (current->next != NULL) {
-			current = current->next;
-		}
-		current->next = createnode(id, arrival_time, burst_time, priority);
-	}
-}
-
-void add2(int id, int arrival_time, int burst_time, int priority, List * list) {
-	Node * current = NULL;
-	Node * tempPrev = NULL;
-	if (list->head == NULL) {
-		list->head = createnode(id, arrival_time, burst_time, priority);
-	}
-	else {
-		current = list->head;
-		while (current->next != NULL) {
-			current = current->next;
-		}
-		current->next = createnode(id, arrival_time, burst_time, priority);
-		tempPrev = current;
-		current = current->next;
-		current->previous = tempPrev;
-	}
-}
-
 void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list) {
-	// printf("Displaying list before sort\n");
-	// display(list);
 	Node * current = NULL;
-	//temp node to compare against
+
 	Node * compare = createnode(id, arrival_time, burst_time, priority);
-	Node * temp = NULL;
+	Node * temp = NULL;                //Temp node to compare against
 	Node * tempPrev = NULL;
 	if (list->head == NULL) {
 		list->head = createnode(id, arrival_time, burst_time, priority);
@@ -97,10 +45,8 @@ void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list)
 		if (current->next == NULL) {
 			printf("badwwwwww\n");
 			current->next = createnode(id, arrival_time, burst_time, priority);
-		}//
-		 //int stop = 1;
+		}
 		while (current->next != NULL) {
-			//printf("entered: %i\n", current->burst_time);
 			//If compare is smaller, insert smaller in front of current
 			if (current->burst_time > compare->burst_time) {
 				break;
@@ -143,23 +89,16 @@ void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list)
 			}
 		}
 		//Check if there exists a previous Node
-		//If it exists, store it
+		//If it exists store it
 		if (current->previous != NULL) {
 			tempPrev = current->previous;
 		}
-		//swap
-		//FIGURE OUT WAY TO STORE HEAD
-		printf("comp node: %i %i %i %i\n", compare->id, compare->arrival_time, compare->burst_time, compare->priority);
-		printf("curr node: %i %i %i %i\n", current->id, current->arrival_time, current->burst_time, current->priority);
 		temp = current;             //temp store the larger
 		current = compare;          //move smaller in front
-									// printf("prev node: %i %i %i %i\n", temp->id, temp->arrival_time, temp->burst_time, temp->priority);
-									// printf("comp node: %i %i %i %i\n", compare->id, compare->arrival_time, compare->burst_time, compare->priority);
-									// printf("newNode: %i %i %i %i\n", current->id, current->arrival_time, current->burst_time, current->priority);
 		current->next = temp;       //have smaller point to larger
 		current = current->next;    //move to large node
 		current->previous = compare;//large node previous point to smaller
-									//If not at head, original was pointing to large, now point to small
+		//If not at head, original was pointing to large, now point to small
 		if (tempPrev != NULL) {
 			current = tempPrev;       //load original pointing to large
 			current->next = compare;  //original point to small now
@@ -173,9 +112,7 @@ void SJFadd(int id, int arrival_time, int burst_time, int priority, List * list)
 			printf("printing: %i %i %i %i\n", current->id, current->arrival_time, current->burst_time, current->priority);
 			current = current->next;
 		}
-		//display(list);
-	}//end of else
-
+	}
 }
 
 void priorityAdd(int id, int arrival_time, int burst_time, int priority, List * list) {
@@ -204,15 +141,6 @@ void priorityAdd(int id, int arrival_time, int burst_time, int priority, List * 
 			}
 			trigger++;
 		}
-		//temp skipping while loop when bigger num
-		/*if (trigger == 0) {
-			current = list->head;
-			// set temp as new current
-			if (current->priority > temp->priority) {
-				temp->next = current;
-				current = temp;
-			}
-		}*/
 		//Works fine inserting at tail
 		if (current == NULL) {       //End loop if reach tail
 			printf("triggered2\n");
@@ -224,24 +152,18 @@ void priorityAdd(int id, int arrival_time, int burst_time, int priority, List * 
 			//current = list->head; // reset head
 		}
 		else {
-			printf("------------------------------------------\n");
-			//current = current->next;
-			//printf("holder: %i %i %i %i\n", holder->id, holder->arrival_time, holder->burst_time, holder->priority);
-			//printf("new: %i %i %i %i\n", temp->id, temp->arrival_time, temp->burst_time, temp->priority);
-			//printf("Dcurrent: %i %i %i %i\n", current->id, current->arrival_time, current->burst_time, current->priority);
 			temp->next = current;         //New node point to node ahead
 			current = holder;             //load in past node
 			holder->next = temp;          //have past node point to new node
-			//current = list->head; // reset head
 		}
 	}
 	//debug print test
-	printf("WORK");
+	printf("npps: 2120, 1, 7, 1\n");
 	current = list->head;
 	while (current->next != NULL)
 	{
 		current = current->next;
-		printf("current: %i %i %i %i\n", current->id, current->arrival_time, current->burst_time, current->priority);
+		printf("npps: %i %i %i %i\n", current->id, current->arrival_time, current->burst_time, current->priority);
 	}
 }
 
