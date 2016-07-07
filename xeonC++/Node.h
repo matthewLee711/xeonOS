@@ -18,7 +18,6 @@ public:
 	int getArrivalTime();
 	Node* getNext();
 	void setNext(Node* link);
-
 };
 
 #endif
