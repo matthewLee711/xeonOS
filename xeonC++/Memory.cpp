@@ -4,6 +4,7 @@ Memory::Memory() {
 	originalMemorySize = 0;
 	memorySize = 0;
 	startingAddress = 0;
+	memID = 0;
 	next = nullptr;
 }
 
@@ -42,6 +43,6 @@ void Memory::setStartingAddress(int startingAddress) {
 	this->startingAddress = startingAddress;
 }
 
-std::queue<Node *> Memory::getRunQueue() {
+std::deque<Node *> Memory::getRunQueue() {
 	return runQueue;
 }

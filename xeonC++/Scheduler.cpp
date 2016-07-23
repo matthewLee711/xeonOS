@@ -110,8 +110,8 @@ void Scheduler::allocateProcesses() {
 		if (current != nullptr && memCurrent->getMemorySize() > current->getSizeOfMemory()) {//queue is empty error
 			printf("allocate processes: size %i dur %i\n", current->getSizeOfMemory(), current->getDuration());
 			//memCurrent->getRunQueue().push(current);//this doesnt work for some reason
-			memCurrent->runQueue.push(current);
-			memCurrent->runDuration.push(current->getSizeOfMemory());//lol
+			memCurrent->runQueue.push_front(current);
+			memCurrent->runDuration.push(current->getDuration());//lol
 			printf("runqueue push: size %i dur %i\n", memCurrent->getRunQueue().front()->getSizeOfMemory(), memCurrent->getRunQueue().front()->getDuration());
 			printf("orig mem size: %i\n", memCurrent->getMemorySize());
 			memCurrent->setMemorySize(memCurrent->getMemorySize() - current->getSizeOfMemory());
@@ -129,8 +129,27 @@ void Scheduler::allocateProcesses() {
 	//return memory not allocated
 	//return ....
 }
+/*
+void Scheduler::globalDecrement() {
+	Memory * memCurrent = memHead;
+	printf("memCurr size %i \n", memCurrent->getMemorySize());
+	//printf("memCurr dur %i \n", memCurrent->runQueue.front()->getDuration()); //why not work
+	printf("memCurr dur test %i \n", memCurrent->runDuration.front());
+	while (memCurrent != nullptr) {
+		if (memCurrent->runDuration.empty()) {
+			printf("bad"); break;
+		}
+		memCurrent->runDuration.front();
+		printf("decrement %i \n", memCurrent->runQueue.front()->getDuration());
+		if (memCurrent->getRunQueue().front()->getDuration() == 0) {
+			printf("popping %i \n", memCurrent->runQueue.front()->getDuration());
+			memCurrent->setMemorySize(memCurrent->getMemorySize() + memCurrent->getRunQueue().front()->getSizeOfMemory());
 
-
+			memCurrent->getRunQueue().pop();
+		}//process reaches zero-> add back memory, remove process
+		memCurrent = memCurrent->getNext();
+	}
+}*/
 
 //iterate through and decrement, return if something reach 0?
 void Scheduler::globalDecrement() {
@@ -148,7 +167,8 @@ void Scheduler::globalDecrement() {
 			printf("popping %i \n", memCurrent->runQueue.front()->getDuration());
 			memCurrent->setMemorySize(memCurrent->getMemorySize() + memCurrent->getRunQueue().front()->getSizeOfMemory());
 
-			memCurrent->getRunQueue().pop();
+			memCurrent->getRunQueue().pop_front();
+			//memCurrent->getRunQueue().pop();
 		}//process reaches zero-> add back memory, remove process
 		memCurrent = memCurrent->getNext();
 	}
