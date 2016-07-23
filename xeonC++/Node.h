@@ -18,6 +18,7 @@ public:
 	int getSizeOfMemory();
 	int getDuration();
 	void setDuration(int duration);
+	void decrementDuration();
 	int getPid();
 	int getBurstTime();
 	int getPriority();

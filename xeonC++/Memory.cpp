@@ -41,3 +41,7 @@ int Memory::getStartingAddress() {
 void Memory::setStartingAddress(int startingAddress) {
 	this->startingAddress = startingAddress;
 }
+
+std::queue<Node> Memory::getRunQueue() {
+  return runQueue;
+}

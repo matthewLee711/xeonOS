@@ -36,6 +36,10 @@ void Node::setDuration(int duration) {
 	this->duration = duration;
 }
 
+void Node::decrementDuration() {
+	duration -= 1;
+}
+
 int Node::getPid() {
 	return pid;
 }

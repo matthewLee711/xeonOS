@@ -1,6 +1,8 @@
 #include "Scheduler.h"
 
-Scheduler::Scheduler() :head(nullptr), memHead(nullptr) { }
+Scheduler::Scheduler() :head(nullptr), memHead(nullptr) {
+	globalCounter = 1;
+}
 
 void Scheduler::schedulerChooser(std::vector<int> pcb, Scheduler * list, int schedulerChoice) {
 	if (schedulerChoice == 0) {
@@ -70,6 +72,40 @@ void Scheduler::memSchedulerChooser() {
 
 }
 
+//checks if empty and adds processes to non-empty memories
+void Scheduler::allocateProcesses() {
+	Node * current = head;
+	Memory * memCurrent = memHead;
+	while(memCurrent->getMemorySize() < current->getSizeOfMemory()) {
+		memCurrent = memCurrent->getNext();
+	}
+	//return true -- to indicate memory allocated
+	//return memory not allocated
+	//return ....
+}
+
+//iterate through and decrement, return if something reach 0?
+void Scheduler::globalDecrement() {
+	Memory * memCurrent = memHead;
+	while(memCurrent->getNext() != nullptr) {
+		memCurrent->getRunQueue().front()->decrementDuration();
+		if(memCurrent->getRunQueue().front()->getDuration() == 0) {
+			memCurrent->setMemorySize(memCurrent->getMemorySize() + getRunQueue().front()->getSizeOfMemory());
+			memCurrent->getRunQueue().pop();
+		}//process reaches zero-> add back memory, remove process
+		memCurrent = memCurrent->getNext();
+	}
+}
+
+//returns if memory is empty
+bool Scheduler::isEmpty(){
+	if(memHead == nullptr) {
+		return true;
+	}
+	//NEED head is empty
+	//iterate until clear.
+}
+
 void Scheduler::memoryInitializer(int startingAddress, int availableSpace) {
 	Memory * link = new Memory(startingAddress, availableSpace);
 	if (memHead == nullptr) {
@@ -86,11 +122,15 @@ void Scheduler::memoryInitializer(int startingAddress, int availableSpace) {
 }
 
 //function which adds as many pcbs to memQueue as possible
-
+//startingAddress,availableSpace
+//[200,300],[600, 600],[1400, 350],[2000, 200],[2500, 750],[3500, 125]
 void Scheduler::firstFitScheduler() {
+	//keep iterating through trying to add proccesses.
+	//use decrement global counter
+	allocateProcesses();
+	globalDecrement();
 
-//keep track of lowest number for timer
-//watch
+
 }
 
 void Scheduler::bestFitScheduler() {

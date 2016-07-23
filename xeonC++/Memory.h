@@ -1,5 +1,7 @@
 #ifndef MEMORY_HEADER
 #define MEMORY_HEADER
+#include <queue>
+#include "Node.h"
 
 class Memory {
 private:
@@ -7,6 +9,7 @@ private:
 	int originalMemorySize;
 	int memorySize;
 	int startingAddress;
+  std::queue<Node> runQueue;
 
 public:
 	Memory();
@@ -18,6 +21,7 @@ public:
   void setMemorySize(int memorySize);
 	int getStartingAddress();
 	void setStartingAddress(int startingAddress);
+  std::queue<Node> getRunQueue();
 };
 
 #endif

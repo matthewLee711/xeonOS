@@ -11,6 +11,7 @@ private:
 	Memory * memHead;
 	double sjfAverageTime;
   double priorityAverageTime;
+	int globalCounter;
 public:
 	Scheduler();
 	void schedulerChooser(std::vector<int>pcb, Scheduler * list, int schedulerChoice);
@@ -19,6 +20,9 @@ public:
 	void memSchedulerChooser();
 	//initializes memory
 	void memoryInitializer(int startingAddress, int availableSpace);
+	void allocateProcesses();
+	bool isEmpty();
+	void globalDecrement();
 	//best fit scheduler -- can still use node
 	void firstFitScheduler();
 	void bestFitScheduler();
