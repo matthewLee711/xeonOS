@@ -26,6 +26,14 @@ int Memory::getOriginalMemorySize() {
 	return originalMemorySize;
 }
 
+int Memory::getMemorySize(){
+  return memorySize;
+}
+
+void Memory::setMemorySize(int memorySize){
+  this->memorySize = memorySize;
+}
+
 int Memory::getStartingAddress() {
 	return startingAddress;
 }

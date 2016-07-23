@@ -14,6 +14,8 @@ public:
 	Memory* getNext();
 	void setNext(Memory* next);
 	int getOriginalMemorySize();//dont need set
+  int getMemorySize();
+  void setMemorySize(int memorySize);
 	int getStartingAddress();
 	void setStartingAddress(int startingAddress);
 };

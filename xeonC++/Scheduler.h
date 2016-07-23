@@ -22,6 +22,7 @@ public:
 	//best fit scheduler -- can still use node
 	void firstFitScheduler();
 	void bestFitScheduler();
+	void displayMemory();
 	void defaultInsert(int pid, int arrival_time, int burst_time, int priority);
 	void defaultDelete();
   void deleteToEmpty();

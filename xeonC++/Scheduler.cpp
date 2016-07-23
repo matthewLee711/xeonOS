@@ -67,29 +67,48 @@ void Scheduler::defaultInsert(int pid, int arrival_time, int burst_time, int pri
 }
 
 void Scheduler::memSchedulerChooser() {
-	
+
 }
 
 void Scheduler::memoryInitializer(int startingAddress, int availableSpace) {
-	Memory * memLink = new Memory(startingAddress, availableSpace);
-	if(memHead == nullptr) {
-		memHead = memLink;
+	Memory * link = new Memory(startingAddress, availableSpace);
+	if (memHead == nullptr) {
+		memHead = link;
 	}
 	else {
-		Memory * memCurrent = memHead;
-		while(memCurrent != nullptr) {
-			memCurrent = memCurrent->getNext();
+		Memory * current = memHead;
+		while (current->getNext() != nullptr) {
+			current = current->getNext();
 		}
-		memCurrent->setNext(memLink);
+		current->setNext(link);
 	}
+	displayMemory();
 }
+
+//function which adds as many pcbs to memQueue as possible
 
 void Scheduler::firstFitScheduler() {
 
+//keep track of lowest number for timer
+//watch
 }
 
 void Scheduler::bestFitScheduler() {
 
+}
+
+void Scheduler::displayMemory() {
+	if (memHead != nullptr) {
+		Memory * temp = memHead;
+		while (temp->getNext() != nullptr) {
+			printf("%i %i\n", temp->getMemorySize(), temp->getStartingAddress());
+			temp = temp->getNext();
+		}
+		printf("%i %i\n", temp->getMemorySize(), temp->getStartingAddress());
+	}
+	else {
+		std::cout << "The queue is empty\n";
+	}
 }
 
 void Scheduler::defaultDelete() {
