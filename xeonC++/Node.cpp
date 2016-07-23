@@ -18,10 +18,11 @@ Node::Node(int pid, int arrival_time, int burst_time, int priority) {
 }
 
 Node::Node(int id, double arrival_time, int duration, int size_of_memory) {
-	this->pid = pid;
+	this->pid = id;
 	this->arrival_time = arrival_time;
 	this->duration = duration;
 	this->size_of_memory = size_of_memory;
+	next = nullptr;
 }
 
 int Node::getSizeOfMemory() {

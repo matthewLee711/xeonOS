@@ -8,7 +8,7 @@ Memory::Memory() {
 }
 
 Memory::Memory(int memorySize, int startingAddress) {
-	this->originalMemorySize = originalMemorySize;
+	this->originalMemorySize = memorySize;
 	this->memorySize = memorySize;
 	this->startingAddress = startingAddress;
 	next = nullptr;
@@ -26,12 +26,12 @@ int Memory::getOriginalMemorySize() {
 	return originalMemorySize;
 }
 
-int Memory::getMemorySize(){
-  return memorySize;
+int Memory::getMemorySize() {
+	return memorySize;
 }
 
-void Memory::setMemorySize(int memorySize){
-  this->memorySize = memorySize;
+void Memory::setMemorySize(int memorySize) {
+	this->memorySize = memorySize;
 }
 
 int Memory::getStartingAddress() {
@@ -42,6 +42,6 @@ void Memory::setStartingAddress(int startingAddress) {
 	this->startingAddress = startingAddress;
 }
 
-std::queue<Node> Memory::getRunQueue() {
-  return runQueue;
+std::queue<Node *> Memory::getRunQueue() {
+	return runQueue;
 }

@@ -9,19 +9,22 @@ private:
 	int originalMemorySize;
 	int memorySize;
 	int startingAddress;
-  std::queue<Node> runQueue;
+
 
 public:
+	std::queue<Node *> runQueue;
+	std::queue<int> runDuration;
 	Memory();
 	Memory(int memorySize, int startingAddress);
 	Memory* getNext();
 	void setNext(Memory* next);
 	int getOriginalMemorySize();//dont need set
-  int getMemorySize();
-  void setMemorySize(int memorySize);
+	int getMemorySize();
+	void setMemorySize(int memorySize);
 	int getStartingAddress();
 	void setStartingAddress(int startingAddress);
-  std::queue<Node> getRunQueue();
+	std::queue<Node *> getRunQueue();
+	int memID;
 };
 
 #endif

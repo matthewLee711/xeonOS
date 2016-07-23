@@ -166,6 +166,28 @@ void memScheduler(std::string fileName, Scheduler * list) {
 				//move to next line
 			}
 		}
+		printf("loading pcbs in");
+		//LOAD in pcb
+		std::ifstream file2("mem3.txt", std::ios::in);
+		while (getline(file2, line)) {
+			if (line.find(", ") != std::string::npos) {
+				std::stringstream ss(line);
+				while (ss >> ext) {
+					memPcb.push_back(ext);
+					if (ss.peek() == ',' || ss.peek() == ' ') {
+						ss.ignore();
+					}
+				}
+				//list->memSchedulerChooser(pcb, list, schedulerChoice);
+				list->initProcesses(memPcb[0], memPcb[1], memPcb[2], memPcb[3]);
+				memPcb.clear();
+				//printf("load next process");
+			}
+			else {
+				//move to next line
+			}
+		}
+		list->firstFitScheduler();
 	}
 	else {
 		std::cout << "Please enter a valid file name\n";

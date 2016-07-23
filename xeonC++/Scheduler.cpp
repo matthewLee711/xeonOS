@@ -72,25 +72,82 @@ void Scheduler::memSchedulerChooser() {
 
 }
 
+void Scheduler::initProcesses(int id, double arrival_time, int duration, int size_of_memory) {
+	Node * link = new Node(id, arrival_time, duration, size_of_memory);
+	if (head == nullptr) {
+		head = link;
+	}
+	else {
+		Node * current = head;
+		while (current->getNext() != nullptr) {
+			current = current->getNext();
+		}
+		current->setNext(link);
+	}
+	displayMemory();
+	printf("-----------------------\n");
+}
+
+void Scheduler::headDelete() {
+	if (head == nullptr) {
+		std::cout << "You can't delete from an empty queue\n";
+	}
+	else {
+		Node * temp = head->getNext();
+		printf("Deleted pcb from ready queue: %i %i\n", head->getPid(), head->getDuration());
+		printf("--------------------------------------------\n");
+		delete head;
+		head = temp;
+	}
+}
+
 //checks if empty and adds processes to non-empty memories
+//need check if ready queue is empty -- or crash
 void Scheduler::allocateProcesses() {
 	Node * current = head;
 	Memory * memCurrent = memHead;
-	while(memCurrent->getMemorySize() < current->getSizeOfMemory()) {
-		memCurrent = memCurrent->getNext();
+	while (memCurrent->getNext() != nullptr) {
+		if (current != nullptr && memCurrent->getMemorySize() > current->getSizeOfMemory()) {//queue is empty error
+			printf("allocate processes: size %i dur %i\n", current->getSizeOfMemory(), current->getDuration());
+			//memCurrent->getRunQueue().push(current);//this doesnt work for some reason
+			memCurrent->runQueue.push(current);
+			memCurrent->runDuration.push(current->getSizeOfMemory());//lol
+			printf("runqueue push: size %i dur %i\n", memCurrent->getRunQueue().front()->getSizeOfMemory(), memCurrent->getRunQueue().front()->getDuration());
+			printf("orig mem size: %i\n", memCurrent->getMemorySize());
+			memCurrent->setMemorySize(memCurrent->getMemorySize() - current->getSizeOfMemory());
+			printf("new mem size: %i\n", memCurrent->getMemorySize());
+			printf("inside run queue: %i\n", memCurrent->getRunQueue().front()->getSizeOfMemory());
+			headDelete();//once added, remove PCB from ready queue
+			current = head;//re-update to new head
+		}//add pcb to memory that has enough space, decrement memory
+		else {
+			printf("next memory\n");
+			memCurrent = memCurrent->getNext();
+		}//move to next memory slot, if cannot add process to it
 	}
 	//return true -- to indicate memory allocated
 	//return memory not allocated
 	//return ....
 }
 
+
+
 //iterate through and decrement, return if something reach 0?
 void Scheduler::globalDecrement() {
 	Memory * memCurrent = memHead;
-	while(memCurrent->getNext() != nullptr) {
-		memCurrent->getRunQueue().front()->decrementDuration();
-		if(memCurrent->getRunQueue().front()->getDuration() == 0) {
-			memCurrent->setMemorySize(memCurrent->getMemorySize() + getRunQueue().front()->getSizeOfMemory());
+	printf("memCurr size %i \n", memCurrent->getMemorySize());
+	//printf("memCurr dur %i \n", memCurrent->runQueue.front()->getDuration()); //why not work
+	printf("memCurr dur test %i \n", memCurrent->runDuration.front());
+	while (memCurrent != nullptr) {
+		if (memCurrent->getRunQueue().empty()) {
+			printf("bad"); break;
+		}
+		memCurrent->runQueue.front()->decrementDuration();
+		printf("decrement %i \n", memCurrent->runQueue.front()->getDuration());
+		if (memCurrent->getRunQueue().front()->getDuration() == 0) {
+			printf("popping %i \n", memCurrent->runQueue.front()->getDuration());
+			memCurrent->setMemorySize(memCurrent->getMemorySize() + memCurrent->getRunQueue().front()->getSizeOfMemory());
+
 			memCurrent->getRunQueue().pop();
 		}//process reaches zero-> add back memory, remove process
 		memCurrent = memCurrent->getNext();
@@ -98,8 +155,8 @@ void Scheduler::globalDecrement() {
 }
 
 //returns if memory is empty
-bool Scheduler::isEmpty(){
-	if(memHead == nullptr) {
+bool Scheduler::isEmpty() {
+	if (memHead == nullptr) {
 		return true;
 	}
 	//NEED head is empty
@@ -129,8 +186,6 @@ void Scheduler::firstFitScheduler() {
 	//use decrement global counter
 	allocateProcesses();
 	globalDecrement();
-
-
 }
 
 void Scheduler::bestFitScheduler() {
@@ -165,6 +220,8 @@ void Scheduler::defaultDelete() {
 		current->setNext(nullptr);
 	}
 }
+
+
 
 void Scheduler::deleteToEmpty() {
 	if (head != nullptr) {
