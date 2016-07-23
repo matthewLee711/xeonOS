@@ -10,7 +10,7 @@ private:
 
 public:
 	Memory();
-	Memory(Memory* next, int originalMemorySize, int memorySize, int startingAddress);
+	Memory(int memorySize, int startingAddress);
 	Memory* getNext();
 	void setNext(Memory* next);
 	int getOriginalMemorySize();//dont need set

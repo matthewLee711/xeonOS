@@ -7,7 +7,7 @@ Memory::Memory() {
 	next = nullptr;
 }
 
-Memory::Memory(Memory* next, int originalMemorySize, int memorySize, int startingAddress) {
+Memory::Memory(int memorySize, int startingAddress) {
 	this->originalMemorySize = originalMemorySize;
 	this->memorySize = memorySize;
 	this->startingAddress = startingAddress;

@@ -3,10 +3,12 @@
 #include <vector>
 #include <iostream>
 #include "Node.h"
+#include "Memory.h"
 
 class Scheduler {
 private:
 	Node * head;
+	Memory * memHead;
 	double sjfAverageTime;
   double priorityAverageTime;
 public:
@@ -14,6 +16,7 @@ public:
 	void schedulerChooser(std::vector<int>pcb, Scheduler * list, int schedulerChoice);
 	void shortestJobFirst(int pid, int arrival_time, int burst_time, int priority);
 	void priorityScheduler(int pid, int arrival_time, int burst_time, int priority);
+	void memSchedulerChooser();
 	//initializes memory
 	void memoryInitializer(int startingAddress, int availableSpace);
 	//best fit scheduler -- can still use node

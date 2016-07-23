@@ -1,6 +1,6 @@
 #include "Scheduler.h"
 
-Scheduler::Scheduler() :head(nullptr) { }
+Scheduler::Scheduler() :head(nullptr), memHead(nullptr) { }
 
 void Scheduler::schedulerChooser(std::vector<int> pcb, Scheduler * list, int schedulerChoice) {
 	if (schedulerChoice == 0) {
@@ -64,6 +64,32 @@ void Scheduler::defaultInsert(int pid, int arrival_time, int burst_time, int pri
 		}
 		current->setNext(link);
 	}
+}
+
+void Scheduler::memSchedulerChooser() {
+	
+}
+
+void Scheduler::memoryInitializer(int startingAddress, int availableSpace) {
+	Memory * memLink = new Memory(startingAddress, availableSpace);
+	if(memHead == nullptr) {
+		memHead = memLink;
+	}
+	else {
+		Memory * memCurrent = memHead;
+		while(memCurrent != nullptr) {
+			memCurrent = memCurrent->getNext();
+		}
+		memCurrent->setNext(memLink);
+	}
+}
+
+void Scheduler::firstFitScheduler() {
+
+}
+
+void Scheduler::bestFitScheduler() {
+
 }
 
 void Scheduler::defaultDelete() {
