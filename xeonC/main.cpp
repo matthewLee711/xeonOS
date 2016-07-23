@@ -27,8 +27,6 @@ void userPrompt() {
 		std::cout << "Press 2 to insert a PCB\n";
 		std::cout << "Press 3 for PCB delete options\n";
 		std::cout << "Press 4 to display the ready queue's information\n";
-    std::cout << "Press 5 to display the waiting queue's information\n";
-    std::cout << "Press 6 to put processes in the memory manager \n";
 		std::cout << "--------------------------------------------------\n";
 		std::cin >> input;
 		if (input == "0") {
@@ -108,10 +106,6 @@ void userPrompt() {
 		}
     else if (input == "5") {
       std::cout << "The waiting queue is empty\n";
-    }
-    else if (input == "6") {
-      //run procesess in memory manager
-      
     }
 		else {
 			std::cout << "Not a valid input\n";

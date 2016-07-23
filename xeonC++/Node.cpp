@@ -5,6 +5,8 @@ Node::Node() {
 	arrival_time = 0;
 	burst_time = 0;
 	priority = 0;
+	duration = 0;
+	size_of_memory = 0;
 	next = nullptr;
 }
 Node::Node(int pid, int arrival_time, int burst_time, int priority) {
@@ -13,6 +15,25 @@ Node::Node(int pid, int arrival_time, int burst_time, int priority) {
 	this->burst_time = burst_time;
 	this->priority = priority;
 	next = nullptr;
+}
+
+Node::Node(int id, double arrival_time, int duration, int size_of_memory) {
+	this->pid = pid;
+	this->arrival_time = arrival_time;
+	this->duration = duration;
+	this->size_of_memory = size_of_memory;
+}
+
+int Node::getSizeOfMemory() {
+	return size_of_memory;
+}
+
+int Node::getDuration() {
+	return duration;
+}
+
+void Node::setDuration(int duration) {
+	this->duration = duration;
 }
 
 int Node::getPid() {

@@ -8,10 +8,16 @@ private:
 	int burst_time;
 	int priority;
 	int arrival_time;
+	int size_of_memory;
+	int duration;
 
 public:
 	Node();
 	Node(int id, int arrival_time, int burst_time, int priority);
+	Node(int id, double arrival_time, int duration, int size_of_memory);
+	int getSizeOfMemory();
+	int getDuration();
+	void setDuration(int duration);
 	int getPid();
 	int getBurstTime();
 	int getPriority();
