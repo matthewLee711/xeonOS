@@ -46,7 +46,7 @@ int Node::getPid() {
 }
 
 int Node::getBurstTime() {
-	return arrival_time;
+	return burst_time;
 }
 
 int Node::getPriority() {
@@ -54,7 +54,7 @@ int Node::getPriority() {
 }
 
 int Node::getArrivalTime() {
-	return burst_time;
+	return arrival_time;
 }
 
 void Node::setNext(Node* link) {

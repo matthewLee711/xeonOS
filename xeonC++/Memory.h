@@ -1,7 +1,6 @@
 #ifndef MEMORY_HEADER
 #define MEMORY_HEADER
 #include <deque>
-#include <queue>
 #include "Node.h"
 
 class Memory {
@@ -14,6 +13,7 @@ private:
 
 public:
 	std::deque<Node *> runQueue;
+	//std::vector<Node *> runQueue;
 	std::queue<int> runDuration;
 	Memory();
 	Memory(int memorySize, int startingAddress);
@@ -24,7 +24,6 @@ public:
 	void setMemorySize(int memorySize);
 	int getStartingAddress();
 	void setStartingAddress(int startingAddress);
-	//std::queue<Node *> getRunQueue();
 	std::deque<Node *> getRunQueue();
 	int memID;
 };

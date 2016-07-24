@@ -36,6 +36,8 @@ public:
 	double averageWaitTime();
 	void display();
 	~Scheduler();
+	Node * current;
+	Memory * memCurrent;
 	/*
 	Size_of_memory
 	Number_of_available spaces
