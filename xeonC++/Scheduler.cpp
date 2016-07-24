@@ -1,6 +1,9 @@
 #include "Scheduler.h"
 
-Scheduler::Scheduler() :head(nullptr) { }
+Scheduler::Scheduler() :head(nullptr), memHead(nullptr) {
+	globalCounter = 1;
+
+}
 
 void Scheduler::schedulerChooser(std::vector<int> pcb, Scheduler * list, int schedulerChoice) {
 	if (schedulerChoice == 0) {
@@ -66,6 +69,177 @@ void Scheduler::defaultInsert(int pid, int arrival_time, int burst_time, int pri
 	}
 }
 
+void Scheduler::memSchedulerChooser() {
+
+}
+
+void Scheduler::initProcesses(int id, double arrival_time, int duration, int size_of_memory) {
+	Node * link = new Node(id, arrival_time, duration, size_of_memory);
+	if (head == nullptr) {
+		head = link;
+	}
+	else {
+		Node * current = head;
+		while (current->getNext() != nullptr) {
+			current = current->getNext();
+		}
+		current->setNext(link);
+	}
+	displayMemory();
+	printf("-----------------------\n");
+}
+
+void Scheduler::headDelete() {
+	if (head == nullptr) {
+		std::cout << "You can't delete from an empty queue\n";
+	}
+	else {
+		head = head->getNext();
+	}
+}
+
+//checks if empty and adds processes to non-empty memories
+//need check if ready queue is empty -- or crash
+void Scheduler::allocateProcesses() {
+	//Node * current = head;
+	current = head;
+	memCurrent = memHead;
+	//Memory * memCurrent = memHead;
+	while (memCurrent != nullptr) {
+		if (current != nullptr && memCurrent->getMemorySize() > current->getSizeOfMemory()) {//queue is empty error
+			printf("---------------------------\n");
+			printf("allocate processes: size %i dur %i\n", current->getSizeOfMemory(), current->getDuration());
+			//memCurrent->getRunQueue().push(current);//this doesnt work for some reason
+			memCurrent->runQueue.push_back(current);
+			memCurrent->runDuration.push(current->getDuration());
+			memCurrent->runQueue.front();
+			printf("runqueue push: size %i dur %i\n", memCurrent->runQueue.front()->getSizeOfMemory(), memCurrent->getRunQueue().front()->getDuration());
+			printf("orig mem size: %i\n", memCurrent->getMemorySize());
+			memCurrent->setMemorySize(memCurrent->getMemorySize() - current->getSizeOfMemory());
+			printf("new mem size: %i\n", memCurrent->getMemorySize());
+			printf("inside run queue: %i\n", memCurrent->getRunQueue().front()->getSizeOfMemory());
+			printf("---------------------------\n");
+			headDelete();//once added, remove PCB from ready queue<-------FIXEDD!!!
+			current = head;//re-update to new head
+		}//add pcb to memory that has enough space, decrement memory
+		else {
+			printf("next memory\n");
+			memCurrent = memCurrent->getNext();
+		}//move to next memory slot, if cannot add process to it
+	}
+	//return true -- to indicate memory allocated
+	//return memory not allocated
+	//return ....
+}
+/*
+void Scheduler::globalDecrement() {
+	Memory * memCurrent = memHead;
+	printf("memCurr size %i \n", memCurrent->getMemorySize());
+	//printf("memCurr dur %i \n", memCurrent->runQueue.front()->getDuration()); //why not work
+	printf("memCurr dur test %i \n", memCurrent->runDuration.front());
+	while (memCurrent != nullptr) {
+		if (memCurrent->runDuration.empty()) {
+			printf("bad"); break;
+		}
+		memCurrent->runDuration.front();
+		printf("decrement %i \n", memCurrent->runQueue.front()->getDuration());
+		if (memCurrent->getRunQueue().front()->getDuration() == 0) {
+			printf("popping %i \n", memCurrent->runQueue.front()->getDuration());
+			memCurrent->setMemorySize(memCurrent->getMemorySize() + memCurrent->getRunQueue().front()->getSizeOfMemory());
+
+			memCurrent->getRunQueue().pop();
+		}//process reaches zero-> add back memory, remove process
+		memCurrent = memCurrent->getNext();
+	}
+}*/
+
+//iterate through and decrement, return if something reach 0?
+void Scheduler::globalDecrement() {
+	Memory * memCurrent = memHead;
+	printf("---------------------------globalDec\n");
+	printf("memCurr size %i \n", memCurrent->getMemorySize());
+	printf("runqueue size1 %i \n", memCurrent->runQueue.size());
+	printf("runqueue size test2 %i \n", memCurrent->getNext()->runQueue.size());
+	printf("runqueue size test3 %i \n", memCurrent->getNext()->getNext()->runQueue.size());
+	printf("runqueue size test4 %i \n", memCurrent->getNext()->getNext()->getNext()->runQueue.size());
+	printf("runqueue size test5 %i \n", memCurrent->getNext()->getNext()->getNext()->getNext()->runQueue.size());
+	printf("memCurr dur %i \n", memCurrent->getRunQueue().front()->getDuration());
+	printf("---------------------------\n");
+	//printf("memCurr dur test %i \n", memCurrent->runDuration.front());
+	while (memCurrent != nullptr) {
+		if (memCurrent->getRunQueue().empty()) { printf("empty queue\n"); }
+		else {
+			printf("duration before %i %i %i\n", memCurrent->runQueue.front()->getDuration(), memCurrent->runQueue.front()->getSizeOfMemory(), memCurrent->getMemorySize());
+			memCurrent->runQueue.front()->decrementDuration();
+			printf("duration after %i %i %i\n", memCurrent->runQueue.front()->getDuration(), memCurrent->runQueue.front()->getSizeOfMemory(), memCurrent->getMemorySize());
+			printf("---------------------------\n");
+			if (memCurrent->getRunQueue().front()->getDuration() == 0) {
+				printf("POPPING %i %i %i\n", memCurrent->runQueue.front()->getDuration(), memCurrent->runQueue.front()->getSizeOfMemory(), memCurrent->getMemorySize());
+				if (memCurrent->getRunQueue().empty()) { printf("queue is emptied now\n"); }
+				memCurrent->setMemorySize(memCurrent->getMemorySize() + memCurrent->getRunQueue().front()->getSizeOfMemory());
+				memCurrent->getRunQueue().pop_front();
+			}//process reaches zero-> add back memory, remove process
+		}
+		memCurrent = memCurrent->getNext();
+	}
+}
+
+//returns if memory is empty
+bool Scheduler::isEmpty() {
+	if (memHead == nullptr) {
+		return true;
+	}
+	//NEED head is empty
+	//iterate until clear.
+}
+
+void Scheduler::memoryInitializer(int startingAddress, int availableSpace) {
+	Memory * link = new Memory(startingAddress, availableSpace);
+	if (memHead == nullptr) {
+		memHead = link;
+	}
+	else {
+		Memory * current = memHead;
+		while (current->getNext() != nullptr) {
+			current = current->getNext();
+		}
+		current->setNext(link);
+	}
+	displayMemory();
+}
+
+//function which adds as many pcbs to memQueue as possible
+//startingAddress,availableSpace
+//[200,300],[600, 600],[1400, 350],[2000, 200],[2500, 750],[3500, 125]
+void Scheduler::firstFitScheduler() {
+	//keep iterating through trying to add proccesses.
+	//use decrement global counter
+	for (int i = 0; i < 11; i++) {
+		allocateProcesses();
+		globalDecrement();
+	}
+
+
+}
+
+void Scheduler::bestFitScheduler() {
+
+}
+
+void Scheduler::displayMemory() {
+	if (memHead != nullptr) {
+		Memory * temp = memHead;
+		while (temp->getNext() != nullptr) {
+			printf("%i %i\n", temp->getMemorySize(), temp->getStartingAddress());
+			temp = temp->getNext();
+		}
+		printf("%i %i\n", temp->getMemorySize(), temp->getStartingAddress());
+	}
+	else {
+		std::cout << "The queue is empty\n";
+	}
+}
+
 void Scheduler::defaultDelete() {
 	if (head == nullptr) {
 		std::cout << "You can't delete from an empty queue\n";
@@ -80,6 +254,8 @@ void Scheduler::defaultDelete() {
 		current->setNext(nullptr);
 	}
 }
+
+
 
 void Scheduler::deleteToEmpty() {
 	if (head != nullptr) {
